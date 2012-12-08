@@ -24,8 +24,8 @@
 package com.bgsystems.ireview.business.dao;
 
 import com.bgsystems.ireview.business.dao.common.Dao;
-import com.bgsystems.ireview.model.entities.AppUser;
-import com.bgsystems.ireview.model.entities.BusinessContact;
+import com.bgsystems.ireview.model.entities.Commodity;
+import com.bgsystems.ireview.model.entities.CommodityScreenshot;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -34,11 +34,7 @@ import javax.ejb.Local;
  * @author Edwin Bratini
  */
 @Local
-public interface BusinessContactDao extends Dao<BusinessContact> {
+public interface CommodityScreenshotDao extends Dao<CommodityScreenshot> {
 
-    List<BusinessContact> findByBusinessContactName(String businessContactName);
-
-    List<AppUser> findByBusinessContactFirstName(String firstName);
-
-    List<AppUser> findByBusinessContactLastName(String lastName);
+    List<CommodityScreenshot> findByCommodity(Commodity commodity);
 }

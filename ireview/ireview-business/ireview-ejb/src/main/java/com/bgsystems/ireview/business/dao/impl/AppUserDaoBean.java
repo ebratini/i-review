@@ -26,10 +26,15 @@ package com.bgsystems.ireview.business.dao.impl;
 import com.bgsystems.ireview.business.dao.AppUserDao;
 import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.AppUser;
+import com.bgsystems.ireview.model.entities.AppUser_;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -43,14 +48,44 @@ public class AppUserDaoBean extends AbstractDaoBean<AppUser> implements AppUserD
 
     @Inject
     private Logger log;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
-    public AppUser findByUsername(final String username) {
-        log.log(Level.INFO, "find user with username {0}", username);
+    protected EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    @Override
+    public List<AppUser> findByName(String name) {
+        String[] fullName = name.trim().split(" ");
+        if (fullName.length != 2) {
+            String exceptionMessage = "the full name must be provided as [firstName lastName]";
+            log.log(Level.SEVERE, exceptionMessage);
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+        log.log(Level.INFO, "find app user with full name {0}", name);
         CriteriaBuilder builder = getCriteriaBuilder();
         CriteriaQuery<AppUser> query = builder.createQuery(AppUser.class);
-        Root<AppUser> user = query.from(AppUser.class);
-        query.where(builder.equal(user.get(username), username));
-        return getSingleResult(query);
+        Root<AppUser> appUser = query.from(AppUser.class);
+        query.where(builder.equal(appUser.get(AppUser_.firstName), fullName[0]),
+                builder.equal(appUser.get(AppUser_.lastName), fullName[1]));
+        return getResultList(query);
+    }
+
+    @Override
+    public List<AppUser> findByUserFirstName(String firstName) {
+        log.log(Level.INFO, "find app user with first name {0}", firstName);
+        Query query = entityManager.createNamedQuery("AppUser.findByFirstName");
+        query.setParameter("firstName", firstName);
+        return (List<AppUser>) query.getResultList();
+    }
+
+    @Override
+    public List<AppUser> findByUserLastName(String lastName) {
+        log.log(Level.INFO, "find app user with last name {0}", lastName);
+        Query query = entityManager.createNamedQuery("AppUser.findByLastName");
+        query.setParameter("lastName", lastName);
+        return (List<AppUser>) query.getResultList();
     }
 }

@@ -25,6 +25,7 @@ package com.bgsystems.ireview.business.dao;
 
 import com.bgsystems.ireview.business.dao.common.Dao;
 import com.bgsystems.ireview.model.entities.Business;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -34,5 +35,7 @@ import javax.ejb.Local;
 @Local
 public interface BusinessDao extends Dao<Business> {
 
-    Business findByBusinessName(String businessName);
+    List<Business> findByBusinessName(String businessName);
+
+    List<Business> findByBusinessIndustry(String industry);
 }

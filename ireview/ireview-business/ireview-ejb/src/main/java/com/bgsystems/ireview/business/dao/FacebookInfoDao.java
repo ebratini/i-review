@@ -33,7 +33,11 @@ import javax.ejb.Local;
  * @author Edwin Bratini
  */
 @Local
-public interface FacebookInfoDao extends Dao<AppUser> {
+public interface FacebookInfoDao extends Dao<FacebookInfo> {
 
     FacebookInfo findByUser(AppUser user);
+
+    FacebookInfo findByEmail(String email);
+
+    FacebookInfo findByPhone(String phone);
 }

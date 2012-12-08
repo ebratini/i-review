@@ -21,24 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bgsystems.ireview.business.dao;
+package com.bgsystems.ireview.business.dao.impl;
 
-import com.bgsystems.ireview.business.dao.common.Dao;
+import com.bgsystems.ireview.business.dao.ReviewDao;
+import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.AppUser;
-import com.bgsystems.ireview.model.entities.BusinessContact;
+import com.bgsystems.ireview.model.entities.Business;
+import com.bgsystems.ireview.model.entities.Commodity;
+import com.bgsystems.ireview.model.entities.Review;
 import java.util.List;
-import javax.ejb.Local;
+import java.util.logging.Logger;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author Edwin Bratini
  */
-@Local
-public interface BusinessContactDao extends Dao<BusinessContact> {
+@Stateless
+public class ReviewDaoBean extends AbstractDaoBean<Review> implements ReviewDao {
 
-    List<BusinessContact> findByBusinessContactName(String businessContactName);
+    @Inject
+    private Logger log;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    List<AppUser> findByBusinessContactFirstName(String firstName);
+    @Override
+    protected EntityManager getEntityManager() {
+        return entityManager;
+    }
 
-    List<AppUser> findByBusinessContactLastName(String lastName);
+    @Override
+    public List<Review> findByUser(AppUser user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<Review> findByCommodity(Commodity commodity) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<Review> findByBusiness(Business business) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
