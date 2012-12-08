@@ -24,6 +24,7 @@
 package com.bgsystems.ireview.model.entities;
 
 import com.bgsystems.ireview.model.common.AbstractEntity;
+import com.bgsystems.ireview.model.common.EntityIdIdentifiable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -49,76 +50,76 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ReviewUpdate.findAll", query = "SELECT r FROM ReviewUpdate r"),
-    @NamedQuery(name = "ReviewUpdate.findByRvuId", query = "SELECT r FROM ReviewUpdate r WHERE r.rvuId = :rvuId"),
-    @NamedQuery(name = "ReviewUpdate.findByRvuDate", query = "SELECT r FROM ReviewUpdate r WHERE r.rvuDate = :rvuDate"),
-    @NamedQuery(name = "ReviewUpdate.findByRvuRate", query = "SELECT r FROM ReviewUpdate r WHERE r.rvuRate = :rvuRate"),
-    @NamedQuery(name = "ReviewUpdate.findByRvuComment", query = "SELECT r FROM ReviewUpdate r WHERE r.rvuComment = :rvuComment")})
-public class ReviewUpdate extends AbstractEntity {
+    @NamedQuery(name = "ReviewUpdate.findByReviewUpdateId", query = "SELECT r FROM ReviewUpdate r WHERE r.reviewUpdateId = :reviewUpdateId"),
+    @NamedQuery(name = "ReviewUpdate.findByDate", query = "SELECT r FROM ReviewUpdate r WHERE r.date = :date"),
+    @NamedQuery(name = "ReviewUpdate.findByRate", query = "SELECT r FROM ReviewUpdate r WHERE r.rate = :rate"),
+    @NamedQuery(name = "ReviewUpdate.findByComment", query = "SELECT r FROM ReviewUpdate r WHERE r.comment = :comment")})
+public class ReviewUpdate extends AbstractEntity implements EntityIdIdentifiable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "rvu_id")
-    private Integer rvuId;
+    @Column(name = "review_update_id")
+    private Integer reviewUpdateId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "rvu_date")
+    @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date rvuDate;
+    private Date date;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "rvu_rate")
-    private short rvuRate;
+    @Column(name = "rate")
+    private short rate;
     @Size(max = 45)
-    @Column(name = "rvu_comment")
-    private String rvuComment;
-    @JoinColumn(name = "rvw_id", referencedColumnName = "rvw_id")
+    @Column(name = "comment")
+    private String comment;
+    @JoinColumn(name = "review_id", referencedColumnName = "review_id")
     @ManyToOne(optional = false)
     private Review review;
 
     public ReviewUpdate() {
     }
 
-    public ReviewUpdate(Integer rvuId) {
-        this.rvuId = rvuId;
+    public ReviewUpdate(Integer reviewUpdateId) {
+        this.reviewUpdateId = reviewUpdateId;
     }
 
-    public ReviewUpdate(Integer rvuId, Date rvuDate, short rvuRate) {
-        this.rvuId = rvuId;
-        this.rvuDate = rvuDate;
-        this.rvuRate = rvuRate;
+    public ReviewUpdate(Integer reviewUpdateId, Date date, short rate) {
+        this.reviewUpdateId = reviewUpdateId;
+        this.date = date;
+        this.rate = rate;
     }
 
-    public Integer getRvuId() {
-        return rvuId;
+    public Integer getReviewUpdateId() {
+        return reviewUpdateId;
     }
 
-    public void setRvuId(Integer rvuId) {
-        this.rvuId = rvuId;
+    public void setReviewUpdateId(Integer reviewUpdateId) {
+        this.reviewUpdateId = reviewUpdateId;
     }
 
-    public Date getRvuDate() {
-        return rvuDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setRvuDate(Date rvuDate) {
-        this.rvuDate = rvuDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public short getRvuRate() {
-        return rvuRate;
+    public short getRate() {
+        return rate;
     }
 
-    public void setRvuRate(short rvuRate) {
-        this.rvuRate = rvuRate;
+    public void setRate(short rate) {
+        this.rate = rate;
     }
 
-    public String getRvuComment() {
-        return rvuComment;
+    public String getComment() {
+        return comment;
     }
 
-    public void setRvuComment(String rvuComment) {
-        this.rvuComment = rvuComment;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Review getReview() {
@@ -132,7 +133,7 @@ public class ReviewUpdate extends AbstractEntity {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (rvuId != null ? rvuId.hashCode() : 0);
+        hash += (reviewUpdateId != null ? reviewUpdateId.hashCode() : 0);
         return hash;
     }
 
@@ -143,7 +144,7 @@ public class ReviewUpdate extends AbstractEntity {
             return false;
         }
         ReviewUpdate other = (ReviewUpdate) object;
-        if ((this.rvuId == null && other.rvuId != null) || (this.rvuId != null && !this.rvuId.equals(other.rvuId))) {
+        if ((this.reviewUpdateId == null && other.reviewUpdateId != null) || (this.reviewUpdateId != null && !this.reviewUpdateId.equals(other.reviewUpdateId))) {
             return false;
         }
         return true;
@@ -151,7 +152,12 @@ public class ReviewUpdate extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "com.bgsystems.ireview.model.entities.ReviewUpdate[ rvuId=" + rvuId + " ]";
+        return "com.bgsystems.ireview.model.entities.ReviewUpdate[ reviewUpdateId=" + reviewUpdateId + " ]";
+    }
+
+    @Override
+    public Long getId() {
+        return this.getReviewUpdateId().longValue();
     }
     
 }

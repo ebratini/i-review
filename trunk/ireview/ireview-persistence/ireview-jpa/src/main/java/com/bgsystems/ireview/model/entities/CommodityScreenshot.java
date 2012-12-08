@@ -24,6 +24,7 @@
 package com.bgsystems.ireview.model.entities;
 
 import com.bgsystems.ireview.model.common.AbstractEntity;
+import com.bgsystems.ireview.model.common.EntityIdIdentifiable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,62 +47,62 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "CommodityScreenshot.findAll", query = "SELECT c FROM CommodityScreenshot c"),
-    @NamedQuery(name = "CommodityScreenshot.findByCmsId", query = "SELECT c FROM CommodityScreenshot c WHERE c.cmsId = :cmsId"),
-    @NamedQuery(name = "CommodityScreenshot.findByCmsDescription", query = "SELECT c FROM CommodityScreenshot c WHERE c.cmsDescription = :cmsDescription"),
-    @NamedQuery(name = "CommodityScreenshot.findByCmsScreenshotUri", query = "SELECT c FROM CommodityScreenshot c WHERE c.cmsScreenshotUri = :cmsScreenshotUri")})
-public class CommodityScreenshot extends AbstractEntity {
+    @NamedQuery(name = "CommodityScreenshot.findByCommodityScreenshotId", query = "SELECT c FROM CommodityScreenshot c WHERE c.commodityScreenshotId = :commodityScreenshotId"),
+    @NamedQuery(name = "CommodityScreenshot.findByDescription", query = "SELECT c FROM CommodityScreenshot c WHERE c.description = :description"),
+    @NamedQuery(name = "CommodityScreenshot.findByScreenshotUri", query = "SELECT c FROM CommodityScreenshot c WHERE c.screenshotUri = :screenshotUri")})
+public class CommodityScreenshot extends AbstractEntity implements EntityIdIdentifiable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cms_id")
-    private Integer cmsId;
+    @Column(name = "commodity_screenshot_id")
+    private Integer commodityScreenshotId;
     @Size(max = 45)
-    @Column(name = "cms_description")
-    private String cmsDescription;
+    @Column(name = "description")
+    private String description;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "cms_screenshot_uri")
-    private String cmsScreenshotUri;
-    @JoinColumn(name = "cty_id", referencedColumnName = "cty_id")
+    @Column(name = "screenshot_uri")
+    private String screenshotUri;
+    @JoinColumn(name = "commodity_id", referencedColumnName = "commodity_id")
     @ManyToOne(optional = false)
     private Commodity commodity;
 
     public CommodityScreenshot() {
     }
 
-    public CommodityScreenshot(Integer cmsId) {
-        this.cmsId = cmsId;
+    public CommodityScreenshot(Integer commodityScreenshotId) {
+        this.commodityScreenshotId = commodityScreenshotId;
     }
 
-    public CommodityScreenshot(Integer cmsId, String cmsScreenshotUri) {
-        this.cmsId = cmsId;
-        this.cmsScreenshotUri = cmsScreenshotUri;
+    public CommodityScreenshot(Integer commodityScreenshotId, String screenshotUri) {
+        this.commodityScreenshotId = commodityScreenshotId;
+        this.screenshotUri = screenshotUri;
     }
 
-    public Integer getCmsId() {
-        return cmsId;
+    public Integer getCommodityScreenshotId() {
+        return commodityScreenshotId;
     }
 
-    public void setCmsId(Integer cmsId) {
-        this.cmsId = cmsId;
+    public void setCommodityScreenshotId(Integer commodityScreenshotId) {
+        this.commodityScreenshotId = commodityScreenshotId;
     }
 
-    public String getCmsDescription() {
-        return cmsDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCmsDescription(String cmsDescription) {
-        this.cmsDescription = cmsDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getCmsScreenshotUri() {
-        return cmsScreenshotUri;
+    public String getScreenshotUri() {
+        return screenshotUri;
     }
 
-    public void setCmsScreenshotUri(String cmsScreenshotUri) {
-        this.cmsScreenshotUri = cmsScreenshotUri;
+    public void setScreenshotUri(String screenshotUri) {
+        this.screenshotUri = screenshotUri;
     }
 
     public Commodity getCommodity() {
@@ -115,7 +116,7 @@ public class CommodityScreenshot extends AbstractEntity {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cmsId != null ? cmsId.hashCode() : 0);
+        hash += (commodityScreenshotId != null ? commodityScreenshotId.hashCode() : 0);
         return hash;
     }
 
@@ -126,7 +127,7 @@ public class CommodityScreenshot extends AbstractEntity {
             return false;
         }
         CommodityScreenshot other = (CommodityScreenshot) object;
-        if ((this.cmsId == null && other.cmsId != null) || (this.cmsId != null && !this.cmsId.equals(other.cmsId))) {
+        if ((this.commodityScreenshotId == null && other.commodityScreenshotId != null) || (this.commodityScreenshotId != null && !this.commodityScreenshotId.equals(other.commodityScreenshotId))) {
             return false;
         }
         return true;
@@ -134,7 +135,12 @@ public class CommodityScreenshot extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "com.bgsystems.ireview.model.entities.CommodityScreenshot[ cmsId=" + cmsId + " ]";
+        return "com.bgsystems.ireview.model.entities.CommodityScreenshot[ commodityScreenshotId=" + commodityScreenshotId + " ]";
+    }
+
+    @Override
+    public Long getId() {
+        return this.getCommodityScreenshotId().longValue();
     }
     
 }

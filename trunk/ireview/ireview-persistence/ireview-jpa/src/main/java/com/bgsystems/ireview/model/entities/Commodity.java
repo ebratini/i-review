@@ -24,6 +24,7 @@
 package com.bgsystems.ireview.model.entities;
 
 import com.bgsystems.ireview.model.common.AbstractEntity;
+import com.bgsystems.ireview.model.common.EntityIdIdentifiable;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -48,32 +49,32 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Commodity.findAll", query = "SELECT c FROM Commodity c"),
-    @NamedQuery(name = "Commodity.findByCtyId", query = "SELECT c FROM Commodity c WHERE c.ctyId = :ctyId"),
-    @NamedQuery(name = "Commodity.findByCtyName", query = "SELECT c FROM Commodity c WHERE c.ctyName = :ctyName"),
-    @NamedQuery(name = "Commodity.findByCtyDescription", query = "SELECT c FROM Commodity c WHERE c.ctyDescription = :ctyDescription"),
-    @NamedQuery(name = "Commodity.findByCtyPictureUri", query = "SELECT c FROM Commodity c WHERE c.ctyPictureUri = :ctyPictureUri")})
-public class Commodity extends AbstractEntity {
+    @NamedQuery(name = "Commodity.findByCommodityId", query = "SELECT c FROM Commodity c WHERE c.commodityId = :commodityId"),
+    @NamedQuery(name = "Commodity.findByName", query = "SELECT c FROM Commodity c WHERE c.name = :name"),
+    @NamedQuery(name = "Commodity.findByDescription", query = "SELECT c FROM Commodity c WHERE c.description = :description"),
+    @NamedQuery(name = "Commodity.findByPictureUri", query = "SELECT c FROM Commodity c WHERE c.pictureUri = :pictureUri")})
+public class Commodity extends AbstractEntity implements EntityIdIdentifiable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cty_id")
-    private Integer ctyId;
+    @Column(name = "commodity_id")
+    private Integer commodityId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "cty_name")
-    private String ctyName;
+    @Column(name = "name")
+    private String name;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "cty_description")
-    private String ctyDescription;
+    @Column(name = "description")
+    private String description;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "cty_picture_uri")
-    private String ctyPictureUri;
+    @Column(name = "picture_uri")
+    private String pictureUri;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "commodity")
     private Collection<Review> reviewCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "commodity")
@@ -84,47 +85,47 @@ public class Commodity extends AbstractEntity {
     public Commodity() {
     }
 
-    public Commodity(Integer ctyId) {
-        this.ctyId = ctyId;
+    public Commodity(Integer commodityId) {
+        this.commodityId = commodityId;
     }
 
-    public Commodity(Integer ctyId, String ctyName, String ctyDescription, String ctyPictureUri) {
-        this.ctyId = ctyId;
-        this.ctyName = ctyName;
-        this.ctyDescription = ctyDescription;
-        this.ctyPictureUri = ctyPictureUri;
+    public Commodity(Integer commodityId, String name, String description, String pictureUri) {
+        this.commodityId = commodityId;
+        this.name = name;
+        this.description = description;
+        this.pictureUri = pictureUri;
     }
 
-    public Integer getCtyId() {
-        return ctyId;
+    public Integer getCommodityId() {
+        return commodityId;
     }
 
-    public void setCtyId(Integer ctyId) {
-        this.ctyId = ctyId;
+    public void setCommodityId(Integer commodityId) {
+        this.commodityId = commodityId;
     }
 
-    public String getCtyName() {
-        return ctyName;
+    public String getName() {
+        return name;
     }
 
-    public void setCtyName(String ctyName) {
-        this.ctyName = ctyName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCtyDescription() {
-        return ctyDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCtyDescription(String ctyDescription) {
-        this.ctyDescription = ctyDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getCtyPictureUri() {
-        return ctyPictureUri;
+    public String getPictureUri() {
+        return pictureUri;
     }
 
-    public void setCtyPictureUri(String ctyPictureUri) {
-        this.ctyPictureUri = ctyPictureUri;
+    public void setPictureUri(String pictureUri) {
+        this.pictureUri = pictureUri;
     }
 
     @XmlTransient
@@ -157,7 +158,7 @@ public class Commodity extends AbstractEntity {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (ctyId != null ? ctyId.hashCode() : 0);
+        hash += (commodityId != null ? commodityId.hashCode() : 0);
         return hash;
     }
 
@@ -168,7 +169,7 @@ public class Commodity extends AbstractEntity {
             return false;
         }
         Commodity other = (Commodity) object;
-        if ((this.ctyId == null && other.ctyId != null) || (this.ctyId != null && !this.ctyId.equals(other.ctyId))) {
+        if ((this.commodityId == null && other.commodityId != null) || (this.commodityId != null && !this.commodityId.equals(other.commodityId))) {
             return false;
         }
         return true;
@@ -176,7 +177,12 @@ public class Commodity extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "com.bgsystems.ireview.model.entities.Commodity[ ctyId=" + ctyId + " ]";
+        return "com.bgsystems.ireview.model.entities.Commodity[ commodityId=" + commodityId + " ]";
+    }
+
+    @Override
+    public Long getId() {
+        return this.getCommodityId().longValue();
     }
     
 }
