@@ -23,7 +23,7 @@
  */
 package com.bgsystems.ireview.model.entities;
 
-import com.bgsystems.ireview.model.common.AbstractEntity;
+import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -34,45 +34,45 @@ import javax.validation.constraints.NotNull;
  * @author Edwin Bratini
  */
 @Embeddable
-public class BusinessCommodityPK extends AbstractEntity {
+public class BusinessCommodityPK implements Serializable {
     @Basic(optional = false)
     @NotNull
-    @Column(name = "bsn_id")
-    private int bsnId;
+    @Column(name = "business_id")
+    private int businessId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cmd_id")
-    private int cmdId;
+    @Column(name = "commodity_id")
+    private int commodityId;
 
     public BusinessCommodityPK() {
     }
 
-    public BusinessCommodityPK(int bsnId, int cmdId) {
-        this.bsnId = bsnId;
-        this.cmdId = cmdId;
+    public BusinessCommodityPK(int businessId, int commodityId) {
+        this.businessId = businessId;
+        this.commodityId = commodityId;
     }
 
-    public int getBsnId() {
-        return bsnId;
+    public int getBusinessId() {
+        return businessId;
     }
 
-    public void setBsnId(int bsnId) {
-        this.bsnId = bsnId;
+    public void setBusinessId(int businessId) {
+        this.businessId = businessId;
     }
 
-    public int getCmdId() {
-        return cmdId;
+    public int getCommodityId() {
+        return commodityId;
     }
 
-    public void setCmdId(int cmdId) {
-        this.cmdId = cmdId;
+    public void setCommodityId(int commodityId) {
+        this.commodityId = commodityId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) bsnId;
-        hash += (int) cmdId;
+        hash += (int) businessId;
+        hash += (int) commodityId;
         return hash;
     }
 
@@ -83,10 +83,10 @@ public class BusinessCommodityPK extends AbstractEntity {
             return false;
         }
         BusinessCommodityPK other = (BusinessCommodityPK) object;
-        if (this.bsnId != other.bsnId) {
+        if (this.businessId != other.businessId) {
             return false;
         }
-        if (this.cmdId != other.cmdId) {
+        if (this.commodityId != other.commodityId) {
             return false;
         }
         return true;
@@ -94,7 +94,7 @@ public class BusinessCommodityPK extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "com.bgsystems.ireview.model.entities.BusinessCommodityPK[ bsnId=" + bsnId + ", cmdId=" + cmdId + " ]";
+        return "com.bgsystems.ireview.model.entities.BusinessCommodityPK[ businessId=" + businessId + ", commodityId=" + commodityId + " ]";
     }
     
 }

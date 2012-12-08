@@ -23,7 +23,7 @@
  */
 package com.bgsystems.ireview.model.entities;
 
-import com.bgsystems.ireview.model.common.AbstractEntity;
+import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -46,22 +46,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BusinessCommodity.findAll", query = "SELECT b FROM BusinessCommodity b"),
-    @NamedQuery(name = "BusinessCommodity.findByBsnId", query = "SELECT b FROM BusinessCommodity b WHERE b.businessCommodityPK.bsnId = :bsnId"),
-    @NamedQuery(name = "BusinessCommodity.findByCmdId", query = "SELECT b FROM BusinessCommodity b WHERE b.businessCommodityPK.cmdId = :cmdId"),
-    @NamedQuery(name = "BusinessCommodity.findByBscBusinessRelation", query = "SELECT b FROM BusinessCommodity b WHERE b.bscBusinessRelation = :bscBusinessRelation")})
-public class BusinessCommodity extends AbstractEntity {
+    @NamedQuery(name = "BusinessCommodity.findByBusinessId", query = "SELECT b FROM BusinessCommodity b WHERE b.businessCommodityPK.businessId = :businessId"),
+    @NamedQuery(name = "BusinessCommodity.findByCommodityId", query = "SELECT b FROM BusinessCommodity b WHERE b.businessCommodityPK.commodityId = :commodityId"),
+    @NamedQuery(name = "BusinessCommodity.findByBusinessCommodityRelation", query = "SELECT b FROM BusinessCommodity b WHERE b.businessCommodityRelation = :businessCommodityRelation")})
+public class BusinessCommodity implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected BusinessCommodityPK businessCommodityPK;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bsc_business_relation")
-    private String bscBusinessRelation;
-    @JoinColumn(name = "cmd_id", referencedColumnName = "cty_id", insertable = false, updatable = false)
+    @Column(name = "business_commodity_relation")
+    private String businessCommodityRelation;
+    @JoinColumn(name = "commodity_id", referencedColumnName = "commodity_id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Commodity commodity;
-    @JoinColumn(name = "bsn_id", referencedColumnName = "bsn_id", insertable = false, updatable = false)
+    @JoinColumn(name = "business_id", referencedColumnName = "business_id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Business business;
 
@@ -72,13 +72,13 @@ public class BusinessCommodity extends AbstractEntity {
         this.businessCommodityPK = businessCommodityPK;
     }
 
-    public BusinessCommodity(BusinessCommodityPK businessCommodityPK, String bscBusinessRelation) {
+    public BusinessCommodity(BusinessCommodityPK businessCommodityPK, String businessCommodityRelation) {
         this.businessCommodityPK = businessCommodityPK;
-        this.bscBusinessRelation = bscBusinessRelation;
+        this.businessCommodityRelation = businessCommodityRelation;
     }
 
-    public BusinessCommodity(int bsnId, int cmdId) {
-        this.businessCommodityPK = new BusinessCommodityPK(bsnId, cmdId);
+    public BusinessCommodity(int businessId, int commodityId) {
+        this.businessCommodityPK = new BusinessCommodityPK(businessId, commodityId);
     }
 
     public BusinessCommodityPK getBusinessCommodityPK() {
@@ -89,12 +89,12 @@ public class BusinessCommodity extends AbstractEntity {
         this.businessCommodityPK = businessCommodityPK;
     }
 
-    public String getBscBusinessRelation() {
-        return bscBusinessRelation;
+    public String getBusinessCommodityRelation() {
+        return businessCommodityRelation;
     }
 
-    public void setBscBusinessRelation(String bscBusinessRelation) {
-        this.bscBusinessRelation = bscBusinessRelation;
+    public void setBusinessCommodityRelation(String businessCommodityRelation) {
+        this.businessCommodityRelation = businessCommodityRelation;
     }
 
     public Commodity getCommodity() {

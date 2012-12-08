@@ -24,6 +24,7 @@
 package com.bgsystems.ireview.model.entities;
 
 import com.bgsystems.ireview.model.common.AbstractEntity;
+import com.bgsystems.ireview.model.common.EntityIdIdentifiable;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -48,44 +49,80 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Business.findAll", query = "SELECT b FROM Business b"),
-    @NamedQuery(name = "Business.findByBsnId", query = "SELECT b FROM Business b WHERE b.bsnId = :bsnId"),
-    @NamedQuery(name = "Business.findByBsnName", query = "SELECT b FROM Business b WHERE b.bsnName = :bsnName"),
-    @NamedQuery(name = "Business.findByBsnTelephone", query = "SELECT b FROM Business b WHERE b.bsnTelephone = :bsnTelephone"),
-    @NamedQuery(name = "Business.findByBsnAddress", query = "SELECT b FROM Business b WHERE b.bsnAddress = :bsnAddress"),
-    @NamedQuery(name = "Business.findByBsnEmail", query = "SELECT b FROM Business b WHERE b.bsnEmail = :bsnEmail"),
-    @NamedQuery(name = "Business.findByBsnWeb", query = "SELECT b FROM Business b WHERE b.bsnWeb = :bsnWeb")})
-public class Business extends AbstractEntity {
+    @NamedQuery(name = "Business.findByBusinessId", query = "SELECT b FROM Business b WHERE b.businessId = :businessId"),
+    @NamedQuery(name = "Business.findByName", query = "SELECT b FROM Business b WHERE b.name = :name"),
+    @NamedQuery(name = "Business.findByIndustry", query = "SELECT b FROM Business b WHERE b.industry = :industry"),
+    @NamedQuery(name = "Business.findBySummary", query = "SELECT b FROM Business b WHERE b.summary = :summary"),
+    @NamedQuery(name = "Business.findByPhone", query = "SELECT b FROM Business b WHERE b.phone = :phone"),
+    @NamedQuery(name = "Business.findByAddress", query = "SELECT b FROM Business b WHERE b.address = :address"),
+    @NamedQuery(name = "Business.findByCity", query = "SELECT b FROM Business b WHERE b.city = :city"),
+    @NamedQuery(name = "Business.findByRegion", query = "SELECT b FROM Business b WHERE b.region = :region"),
+    @NamedQuery(name = "Business.findByCountry", query = "SELECT b FROM Business b WHERE b.country = :country"),
+    @NamedQuery(name = "Business.findByZipCode", query = "SELECT b FROM Business b WHERE b.zipCode = :zipCode"),
+    @NamedQuery(name = "Business.findByEmail", query = "SELECT b FROM Business b WHERE b.email = :email"),
+    @NamedQuery(name = "Business.findByWeb", query = "SELECT b FROM Business b WHERE b.web = :web")})
+public class Business extends AbstractEntity implements EntityIdIdentifiable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "bsn_id")
-    private Integer bsnId;
+    @Column(name = "business_id")
+    private Integer businessId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bsn_name")
-    private String bsnName;
+    @Column(name = "name")
+    private String name;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bsn_telephone")
-    private String bsnTelephone;
+    @Column(name = "industry")
+    private String industry;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bsn_address")
-    private String bsnAddress;
+    @Column(name = "summary")
+    private String summary;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bsn_email")
-    private String bsnEmail;
+    @Column(name = "phone")
+    private String phone;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bsn_web")
-    private String bsnWeb;
+    @Column(name = "address")
+    private String address;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "city")
+    private String city;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "region")
+    private String region;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "country")
+    private String country;
+    @Size(max = 45)
+    @Column(name = "zip_code")
+    private String zipCode;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "email")
+    private String email;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "web")
+    private String web;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "business")
     private Collection<BusinessCommodity> businessCommodityCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "business")
@@ -94,65 +131,118 @@ public class Business extends AbstractEntity {
     public Business() {
     }
 
-    public Business(Integer bsnId) {
-        this.bsnId = bsnId;
+    public Business(Integer businessId) {
+        this.businessId = businessId;
     }
 
-    public Business(Integer bsnId, String bsnName, String bsnTelephone, String bsnAddress, String bsnEmail, String bsnWeb) {
-        this.bsnId = bsnId;
-        this.bsnName = bsnName;
-        this.bsnTelephone = bsnTelephone;
-        this.bsnAddress = bsnAddress;
-        this.bsnEmail = bsnEmail;
-        this.bsnWeb = bsnWeb;
+    public Business(Integer businessId, String name, String industry, String summary, String phone, String address, String city, String region, String country, String email, String web) {
+        this.businessId = businessId;
+        this.name = name;
+        this.industry = industry;
+        this.summary = summary;
+        this.phone = phone;
+        this.address = address;
+        this.city = city;
+        this.region = region;
+        this.country = country;
+        this.email = email;
+        this.web = web;
     }
 
-    public Integer getBsnId() {
-        return bsnId;
+    public Integer getBusinessId() {
+        return businessId;
     }
 
-    public void setBsnId(Integer bsnId) {
-        this.bsnId = bsnId;
+    public void setBusinessId(Integer businessId) {
+        this.businessId = businessId;
     }
 
-    public String getBsnName() {
-        return bsnName;
+    public String getName() {
+        return name;
     }
 
-    public void setBsnName(String bsnName) {
-        this.bsnName = bsnName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getBsnTelephone() {
-        return bsnTelephone;
+    public String getIndustry() {
+        return industry;
     }
 
-    public void setBsnTelephone(String bsnTelephone) {
-        this.bsnTelephone = bsnTelephone;
+    public void setIndustry(String industry) {
+        this.industry = industry;
     }
 
-    public String getBsnAddress() {
-        return bsnAddress;
+    public String getSummary() {
+        return summary;
     }
 
-    public void setBsnAddress(String bsnAddress) {
-        this.bsnAddress = bsnAddress;
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
-    public String getBsnEmail() {
-        return bsnEmail;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setBsnEmail(String bsnEmail) {
-        this.bsnEmail = bsnEmail;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getBsnWeb() {
-        return bsnWeb;
+    public String getAddress() {
+        return address;
     }
 
-    public void setBsnWeb(String bsnWeb) {
-        this.bsnWeb = bsnWeb;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWeb() {
+        return web;
+    }
+
+    public void setWeb(String web) {
+        this.web = web;
     }
 
     @XmlTransient
@@ -176,7 +266,7 @@ public class Business extends AbstractEntity {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (bsnId != null ? bsnId.hashCode() : 0);
+        hash += (businessId != null ? businessId.hashCode() : 0);
         return hash;
     }
 
@@ -187,7 +277,7 @@ public class Business extends AbstractEntity {
             return false;
         }
         Business other = (Business) object;
-        if ((this.bsnId == null && other.bsnId != null) || (this.bsnId != null && !this.bsnId.equals(other.bsnId))) {
+        if ((this.businessId == null && other.businessId != null) || (this.businessId != null && !this.businessId.equals(other.businessId))) {
             return false;
         }
         return true;
@@ -195,7 +285,12 @@ public class Business extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "com.bgsystems.ireview.model.entities.Business[ bsnId=" + bsnId + " ]";
+        return "com.bgsystems.ireview.model.entities.Business[ businessId=" + businessId + " ]";
+    }
+
+    @Override
+    public Long getId() {
+        return this.getBusinessId().longValue();
     }
     
 }

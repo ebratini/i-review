@@ -24,6 +24,7 @@
 package com.bgsystems.ireview.model.entities;
 
 import com.bgsystems.ireview.model.common.AbstractEntity;
+import com.bgsystems.ireview.model.common.EntityIdIdentifiable;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -49,49 +50,67 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AppUser.findAll", query = "SELECT a FROM AppUser a"),
-    @NamedQuery(name = "AppUser.findByUsrId", query = "SELECT a FROM AppUser a WHERE a.usrId = :usrId"),
-    @NamedQuery(name = "AppUser.findByUsrFirstName", query = "SELECT a FROM AppUser a WHERE a.usrFirstName = :usrFirstName"),
-    @NamedQuery(name = "AppUser.findByUsrLastName", query = "SELECT a FROM AppUser a WHERE a.usrLastName = :usrLastName"),
-    @NamedQuery(name = "AppUser.findByUsrAddress", query = "SELECT a FROM AppUser a WHERE a.usrAddress = :usrAddress"),
-    @NamedQuery(name = "AppUser.findByUsrTelephone", query = "SELECT a FROM AppUser a WHERE a.usrTelephone = :usrTelephone"),
-    @NamedQuery(name = "AppUser.findByUsrNationality", query = "SELECT a FROM AppUser a WHERE a.usrNationality = :usrNationality"),
-    @NamedQuery(name = "AppUser.findByUsrGender", query = "SELECT a FROM AppUser a WHERE a.usrGender = :usrGender"),
-    @NamedQuery(name = "AppUser.findByUsrMaritalStatus", query = "SELECT a FROM AppUser a WHERE a.usrMaritalStatus = :usrMaritalStatus"),
-    @NamedQuery(name = "AppUser.findByUsrEmail", query = "SELECT a FROM AppUser a WHERE a.usrEmail = :usrEmail")})
-public class AppUser extends AbstractEntity {
+    @NamedQuery(name = "AppUser.findByUserId", query = "SELECT a FROM AppUser a WHERE a.userId = :userId"),
+    @NamedQuery(name = "AppUser.findByFirstName", query = "SELECT a FROM AppUser a WHERE a.firstName = :firstName"),
+    @NamedQuery(name = "AppUser.findByLastName", query = "SELECT a FROM AppUser a WHERE a.lastName = :lastName"),
+    @NamedQuery(name = "AppUser.findByAddress", query = "SELECT a FROM AppUser a WHERE a.address = :address"),
+    @NamedQuery(name = "AppUser.findByCity", query = "SELECT a FROM AppUser a WHERE a.city = :city"),
+    @NamedQuery(name = "AppUser.findByRegion", query = "SELECT a FROM AppUser a WHERE a.region = :region"),
+    @NamedQuery(name = "AppUser.findByCountry", query = "SELECT a FROM AppUser a WHERE a.country = :country"),
+    @NamedQuery(name = "AppUser.findByZipCode", query = "SELECT a FROM AppUser a WHERE a.zipCode = :zipCode"),
+    @NamedQuery(name = "AppUser.findByPhone", query = "SELECT a FROM AppUser a WHERE a.phone = :phone"),
+    @NamedQuery(name = "AppUser.findByNationality", query = "SELECT a FROM AppUser a WHERE a.nationality = :nationality"),
+    @NamedQuery(name = "AppUser.findByGender", query = "SELECT a FROM AppUser a WHERE a.gender = :gender"),
+    @NamedQuery(name = "AppUser.findByMaritalStatus", query = "SELECT a FROM AppUser a WHERE a.maritalStatus = :maritalStatus"),
+    @NamedQuery(name = "AppUser.findByEmail", query = "SELECT a FROM AppUser a WHERE a.email = :email")})
+public class AppUser extends AbstractEntity implements EntityIdIdentifiable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "usr_id")
-    private Integer usrId;
+    @Column(name = "user_id")
+    private Integer userId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "usr_first_name")
-    private String usrFirstName;
+    @Column(name = "first_name")
+    private String firstName;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "usr_last_name")
-    private String usrLastName;
+    @Column(name = "last_name")
+    private String lastName;
     @Size(max = 45)
-    @Column(name = "usr_address")
-    private String usrAddress;
+    @Column(name = "address")
+    private String address;
     @Size(max = 45)
-    @Column(name = "usr_telephone")
-    private String usrTelephone;
+    @Column(name = "city")
+    private String city;
     @Size(max = 45)
-    @Column(name = "usr_nationality")
-    private String usrNationality;
-    @Column(name = "usr_gender")
-    private Character usrGender;
+    @Column(name = "region")
+    private String region;
     @Size(max = 45)
-    @Column(name = "usr_marital_status")
-    private String usrMaritalStatus;
+    @Column(name = "country")
+    private String country;
     @Size(max = 45)
-    @Column(name = "usr_email")
-    private String usrEmail;
+    @Column(name = "zip_code")
+    private String zipCode;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
+    @Size(max = 45)
+    @Column(name = "phone")
+    private String phone;
+    @Size(max = 45)
+    @Column(name = "nationality")
+    private String nationality;
+    @Column(name = "gender")
+    private Character gender;
+    @Size(max = 45)
+    @Column(name = "marital_status")
+    private String maritalStatus;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 45)
+    @Column(name = "email")
+    private String email;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "appUser")
     private Collection<Review> reviewCollection;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "appUser")
@@ -100,86 +119,118 @@ public class AppUser extends AbstractEntity {
     public AppUser() {
     }
 
-    public AppUser(Integer usrId) {
-        this.usrId = usrId;
+    public AppUser(Integer userId) {
+        this.userId = userId;
     }
 
-    public AppUser(Integer usrId, String usrFirstName, String usrLastName) {
-        this.usrId = usrId;
-        this.usrFirstName = usrFirstName;
-        this.usrLastName = usrLastName;
+    public AppUser(Integer userId, String firstName, String lastName) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
-    public Integer getUsrId() {
-        return usrId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUsrId(Integer usrId) {
-        this.usrId = usrId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getUsrFirstName() {
-        return usrFirstName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsrFirstName(String usrFirstName) {
-        this.usrFirstName = usrFirstName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getUsrLastName() {
-        return usrLastName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setUsrLastName(String usrLastName) {
-        this.usrLastName = usrLastName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getUsrAddress() {
-        return usrAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setUsrAddress(String usrAddress) {
-        this.usrAddress = usrAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getUsrTelephone() {
-        return usrTelephone;
+    public String getCity() {
+        return city;
     }
 
-    public void setUsrTelephone(String usrTelephone) {
-        this.usrTelephone = usrTelephone;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getUsrNationality() {
-        return usrNationality;
+    public String getRegion() {
+        return region;
     }
 
-    public void setUsrNationality(String usrNationality) {
-        this.usrNationality = usrNationality;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
-    public Character getUsrGender() {
-        return usrGender;
+    public String getCountry() {
+        return country;
     }
 
-    public void setUsrGender(Character usrGender) {
-        this.usrGender = usrGender;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String getUsrMaritalStatus() {
-        return usrMaritalStatus;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setUsrMaritalStatus(String usrMaritalStatus) {
-        this.usrMaritalStatus = usrMaritalStatus;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
-    public String getUsrEmail() {
-        return usrEmail;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUsrEmail(String usrEmail) {
-        this.usrEmail = usrEmail;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public Character getGender() {
+        return gender;
+    }
+
+    public void setGender(Character gender) {
+        this.gender = gender;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @XmlTransient
@@ -202,7 +253,7 @@ public class AppUser extends AbstractEntity {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (usrId != null ? usrId.hashCode() : 0);
+        hash += (userId != null ? userId.hashCode() : 0);
         return hash;
     }
 
@@ -213,7 +264,7 @@ public class AppUser extends AbstractEntity {
             return false;
         }
         AppUser other = (AppUser) object;
-        if ((this.usrId == null && other.usrId != null) || (this.usrId != null && !this.usrId.equals(other.usrId))) {
+        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
             return false;
         }
         return true;
@@ -221,7 +272,12 @@ public class AppUser extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "com.bgsystems.ireview.model.entities.AppUser[ usrId=" + usrId + " ]";
+        return "com.bgsystems.ireview.model.entities.AppUser[ userId=" + userId + " ]";
+    }
+
+    @Override
+    public Long getId() {
+        return this.getUserId().longValue();
     }
     
 }

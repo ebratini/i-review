@@ -24,6 +24,7 @@
 package com.bgsystems.ireview.model.entities;
 
 import com.bgsystems.ireview.model.common.AbstractEntity;
+import com.bgsystems.ireview.model.common.EntityIdIdentifiable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -39,6 +40,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.jasypt.util.password.BasicPasswordEncryptor;
 
 /**
  *
@@ -49,125 +51,141 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "LoginInfo.findAll", query = "SELECT l FROM LoginInfo l"),
-    @NamedQuery(name = "LoginInfo.findByBcoId", query = "SELECT l FROM LoginInfo l WHERE l.bcoId = :bcoId"),
-    @NamedQuery(name = "LoginInfo.findByLgiUserName", query = "SELECT l FROM LoginInfo l WHERE l.lgiUserName = :lgiUserName"),
-    @NamedQuery(name = "LoginInfo.findByLgiPassword", query = "SELECT l FROM LoginInfo l WHERE l.lgiPassword = :lgiPassword"),
-    @NamedQuery(name = "LoginInfo.findByLgiSecurityQuestion", query = "SELECT l FROM LoginInfo l WHERE l.lgiSecurityQuestion = :lgiSecurityQuestion"),
-    @NamedQuery(name = "LoginInfo.findByLgiSecQuestionAnswer", query = "SELECT l FROM LoginInfo l WHERE l.lgiSecQuestionAnswer = :lgiSecQuestionAnswer"),
-    @NamedQuery(name = "LoginInfo.findByLgiLastLoginDate", query = "SELECT l FROM LoginInfo l WHERE l.lgiLastLoginDate = :lgiLastLoginDate"),
-    @NamedQuery(name = "LoginInfo.findByLgiLoginStatus", query = "SELECT l FROM LoginInfo l WHERE l.lgiLoginStatus = :lgiLoginStatus")})
-public class LoginInfo extends AbstractEntity {
+    @NamedQuery(name = "LoginInfo.findByBusinessContactId", query = "SELECT l FROM LoginInfo l WHERE l.businessContactId = :businessContactId"),
+    @NamedQuery(name = "LoginInfo.findByUserName", query = "SELECT l FROM LoginInfo l WHERE l.userName = :userName"),
+    @NamedQuery(name = "LoginInfo.findByPassword", query = "SELECT l FROM LoginInfo l WHERE l.password = :password"),
+    @NamedQuery(name = "LoginInfo.findBySecurityQuestion", query = "SELECT l FROM LoginInfo l WHERE l.securityQuestion = :securityQuestion"),
+    @NamedQuery(name = "LoginInfo.findBySecQuestionAnswer", query = "SELECT l FROM LoginInfo l WHERE l.secQuestionAnswer = :secQuestionAnswer"),
+    @NamedQuery(name = "LoginInfo.findByLastLoginDate", query = "SELECT l FROM LoginInfo l WHERE l.lastLoginDate = :lastLoginDate"),
+    @NamedQuery(name = "LoginInfo.findByLoginStatus", query = "SELECT l FROM LoginInfo l WHERE l.loginStatus = :loginStatus"),
+    @NamedQuery(name = "LoginInfo.findByEmail", query = "SELECT l FROM LoginInfo l WHERE l.email = :email")})
+public class LoginInfo extends AbstractEntity implements EntityIdIdentifiable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "bco_id")
-    private String bcoId;
+    @Column(name = "business_contact_id")
+    private Integer businessContactId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "lgi_user_name")
-    private String lgiUserName;
+    @Column(name = "user_name")
+    private String userName;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "lgi_password")
-    private String lgiPassword;
+    @Column(name = "password")
+    private String password;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "lgi_security_question")
-    private String lgiSecurityQuestion;
+    @Column(name = "security_question")
+    private String securityQuestion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "lgi_sec_question_answer")
-    private String lgiSecQuestionAnswer;
+    @Column(name = "sec_question_answer")
+    private String secQuestionAnswer;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "lgi_last_login_date")
+    @Column(name = "last_login_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date lgiLastLoginDate;
+    private Date lastLoginDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "lgi_login_status")
-    private char lgiLoginStatus;
-    @JoinColumn(name = "bco_id", referencedColumnName = "bco_id", insertable = false, updatable = false)
+    @Column(name = "login_status")
+    private char loginStatus;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "email")
+    private String email;
+    @JoinColumn(name = "business_contact_id", referencedColumnName = "business_contact_id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private BusinessContact businessContact;
 
     public LoginInfo() {
     }
 
-    public LoginInfo(String bcoId) {
-        this.bcoId = bcoId;
+    public LoginInfo(Integer businessContactId) {
+        this.businessContactId = businessContactId;
     }
 
-    public LoginInfo(String bcoId, String lgiUserName, String lgiPassword, String lgiSecurityQuestion, String lgiSecQuestionAnswer, Date lgiLastLoginDate, char lgiLoginStatus) {
-        this.bcoId = bcoId;
-        this.lgiUserName = lgiUserName;
-        this.lgiPassword = lgiPassword;
-        this.lgiSecurityQuestion = lgiSecurityQuestion;
-        this.lgiSecQuestionAnswer = lgiSecQuestionAnswer;
-        this.lgiLastLoginDate = lgiLastLoginDate;
-        this.lgiLoginStatus = lgiLoginStatus;
+    public LoginInfo(Integer businessContactId, String userName, String password, String securityQuestion, String secQuestionAnswer, Date lastLoginDate, char loginStatus, String email) {
+        this.businessContactId = businessContactId;
+        this.userName = userName;
+        this.password = password;
+        this.securityQuestion = securityQuestion;
+        this.secQuestionAnswer = secQuestionAnswer;
+        this.lastLoginDate = lastLoginDate;
+        this.loginStatus = loginStatus;
+        this.email = email;
     }
 
-    public String getBcoId() {
-        return bcoId;
+    public Integer getBusinessContactId() {
+        return businessContactId;
     }
 
-    public void setBcoId(String bcoId) {
-        this.bcoId = bcoId;
+    public void setBusinessContactId(Integer businessContactId) {
+        this.businessContactId = businessContactId;
     }
 
-    public String getLgiUserName() {
-        return lgiUserName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setLgiUserName(String lgiUserName) {
-        this.lgiUserName = lgiUserName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getLgiPassword() {
-        return lgiPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setLgiPassword(String lgiPassword) {
-        this.lgiPassword = lgiPassword;
+    public void setPassword(String password) {
+        this.password = new BasicPasswordEncryptor().encryptPassword(password);
     }
 
-    public String getLgiSecurityQuestion() {
-        return lgiSecurityQuestion;
+    public String getSecurityQuestion() {
+        return securityQuestion;
     }
 
-    public void setLgiSecurityQuestion(String lgiSecurityQuestion) {
-        this.lgiSecurityQuestion = lgiSecurityQuestion;
+    public void setSecurityQuestion(String securityQuestion) {
+        this.securityQuestion = securityQuestion;
     }
 
-    public String getLgiSecQuestionAnswer() {
-        return lgiSecQuestionAnswer;
+    public String getSecQuestionAnswer() {
+        return secQuestionAnswer;
     }
 
-    public void setLgiSecQuestionAnswer(String lgiSecQuestionAnswer) {
-        this.lgiSecQuestionAnswer = lgiSecQuestionAnswer;
+    public void setSecQuestionAnswer(String secQuestionAnswer) {
+        this.secQuestionAnswer = secQuestionAnswer;
     }
 
-    public Date getLgiLastLoginDate() {
-        return lgiLastLoginDate;
+    public Date getLastLoginDate() {
+        return lastLoginDate;
     }
 
-    public void setLgiLastLoginDate(Date lgiLastLoginDate) {
-        this.lgiLastLoginDate = lgiLastLoginDate;
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
     }
 
-    public char getLgiLoginStatus() {
-        return lgiLoginStatus;
+    public char getLoginStatus() {
+        return loginStatus;
     }
 
-    public void setLgiLoginStatus(char lgiLoginStatus) {
-        this.lgiLoginStatus = lgiLoginStatus;
+    public void setLoginStatus(char loginStatus) {
+        this.loginStatus = loginStatus;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public BusinessContact getBusinessContact() {
@@ -181,7 +199,7 @@ public class LoginInfo extends AbstractEntity {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (bcoId != null ? bcoId.hashCode() : 0);
+        hash += (businessContactId != null ? businessContactId.hashCode() : 0);
         return hash;
     }
 
@@ -192,7 +210,7 @@ public class LoginInfo extends AbstractEntity {
             return false;
         }
         LoginInfo other = (LoginInfo) object;
-        if ((this.bcoId == null && other.bcoId != null) || (this.bcoId != null && !this.bcoId.equals(other.bcoId))) {
+        if ((this.businessContactId == null && other.businessContactId != null) || (this.businessContactId != null && !this.businessContactId.equals(other.businessContactId))) {
             return false;
         }
         return true;
@@ -200,7 +218,15 @@ public class LoginInfo extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "com.bgsystems.ireview.model.entities.LoginInfo[ bcoId=" + bcoId + " ]";
+        return "com.bgsystems.ireview.model.entities.LoginInfo[ businessContactId=" + businessContactId + " ]";
     }
-    
+
+    @Override
+    public Long getId() {
+        return this.getBusinessContactId().longValue();
+    }
+
+    public boolean verifyPassword(String password) {
+        return new BasicPasswordEncryptor().checkPassword(password, this.password);
+    }
 }

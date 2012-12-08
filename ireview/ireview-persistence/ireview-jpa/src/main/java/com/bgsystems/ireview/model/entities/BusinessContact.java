@@ -24,6 +24,7 @@
 package com.bgsystems.ireview.model.entities;
 
 import com.bgsystems.ireview.model.common.AbstractEntity;
+import com.bgsystems.ireview.model.common.EntityIdIdentifiable;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,157 +49,157 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BusinessContact.findAll", query = "SELECT b FROM BusinessContact b"),
-    @NamedQuery(name = "BusinessContact.findByBcoId", query = "SELECT b FROM BusinessContact b WHERE b.bcoId = :bcoId"),
-    @NamedQuery(name = "BusinessContact.findByBcoFirstName", query = "SELECT b FROM BusinessContact b WHERE b.bcoFirstName = :bcoFirstName"),
-    @NamedQuery(name = "BusinessContact.findByBcoLastName", query = "SELECT b FROM BusinessContact b WHERE b.bcoLastName = :bcoLastName"),
-    @NamedQuery(name = "BusinessContact.findByBcoAddress", query = "SELECT b FROM BusinessContact b WHERE b.bcoAddress = :bcoAddress"),
-    @NamedQuery(name = "BusinessContact.findByBcoTelephone", query = "SELECT b FROM BusinessContact b WHERE b.bcoTelephone = :bcoTelephone"),
-    @NamedQuery(name = "BusinessContact.findByBcoNationality", query = "SELECT b FROM BusinessContact b WHERE b.bcoNationality = :bcoNationality"),
-    @NamedQuery(name = "BusinessContact.findByBcoGender", query = "SELECT b FROM BusinessContact b WHERE b.bcoGender = :bcoGender"),
-    @NamedQuery(name = "BusinessContact.findByBcoMaritalStatus", query = "SELECT b FROM BusinessContact b WHERE b.bcoMaritalStatus = :bcoMaritalStatus"),
-    @NamedQuery(name = "BusinessContact.findByBcoEmail", query = "SELECT b FROM BusinessContact b WHERE b.bcoEmail = :bcoEmail")})
-public class BusinessContact extends AbstractEntity {
+    @NamedQuery(name = "BusinessContact.findByBusinessContactId", query = "SELECT b FROM BusinessContact b WHERE b.businessContactId = :businessContactId"),
+    @NamedQuery(name = "BusinessContact.findByFirstName", query = "SELECT b FROM BusinessContact b WHERE b.firstName = :firstName"),
+    @NamedQuery(name = "BusinessContact.findByLastName", query = "SELECT b FROM BusinessContact b WHERE b.lastName = :lastName"),
+    @NamedQuery(name = "BusinessContact.findByAddress", query = "SELECT b FROM BusinessContact b WHERE b.address = :address"),
+    @NamedQuery(name = "BusinessContact.findByPhone", query = "SELECT b FROM BusinessContact b WHERE b.phone = :phone"),
+    @NamedQuery(name = "BusinessContact.findByNationality", query = "SELECT b FROM BusinessContact b WHERE b.nationality = :nationality"),
+    @NamedQuery(name = "BusinessContact.findByGender", query = "SELECT b FROM BusinessContact b WHERE b.gender = :gender"),
+    @NamedQuery(name = "BusinessContact.findByMaritalStatus", query = "SELECT b FROM BusinessContact b WHERE b.maritalStatus = :maritalStatus"),
+    @NamedQuery(name = "BusinessContact.findByContactEmail", query = "SELECT b FROM BusinessContact b WHERE b.contactEmail = :contactEmail")})
+public class BusinessContact extends AbstractEntity implements EntityIdIdentifiable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "bco_id")
-    private String bcoId;
+    @Column(name = "business_contact_id")
+    private Integer businessContactId;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bco_first_name")
-    private String bcoFirstName;
+    @Column(name = "first_name")
+    private String firstName;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bco_last_name")
-    private String bcoLastName;
+    @Column(name = "last_name")
+    private String lastName;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bco_address")
-    private String bcoAddress;
+    @Column(name = "address")
+    private String address;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bco_telephone")
-    private String bcoTelephone;
+    @Column(name = "phone")
+    private String phone;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bco_nationality")
-    private String bcoNationality;
+    @Column(name = "nationality")
+    private String nationality;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "bco_gender")
-    private char bcoGender;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "bco_marital_status")
-    private String bcoMaritalStatus;
+    @Column(name = "gender")
+    private char gender;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "bco_email")
-    private String bcoEmail;
+    @Column(name = "marital_status")
+    private String maritalStatus;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "contact_email")
+    private String contactEmail;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "businessContact")
     private LoginInfo loginInfo;
-    @JoinColumn(name = "bsn_id", referencedColumnName = "bsn_id")
+    @JoinColumn(name = "business_id", referencedColumnName = "business_id")
     @ManyToOne(optional = false)
     private Business business;
 
     public BusinessContact() {
     }
 
-    public BusinessContact(String bcoId) {
-        this.bcoId = bcoId;
+    public BusinessContact(Integer businessContactId) {
+        this.businessContactId = businessContactId;
     }
 
-    public BusinessContact(String bcoId, String bcoFirstName, String bcoLastName, String bcoAddress, String bcoTelephone, String bcoNationality, char bcoGender, String bcoMaritalStatus, String bcoEmail) {
-        this.bcoId = bcoId;
-        this.bcoFirstName = bcoFirstName;
-        this.bcoLastName = bcoLastName;
-        this.bcoAddress = bcoAddress;
-        this.bcoTelephone = bcoTelephone;
-        this.bcoNationality = bcoNationality;
-        this.bcoGender = bcoGender;
-        this.bcoMaritalStatus = bcoMaritalStatus;
-        this.bcoEmail = bcoEmail;
+    public BusinessContact(Integer businessContactId, String firstName, String lastName, String address, String phone, String nationality, char gender, String maritalStatus, String contactEmail) {
+        this.businessContactId = businessContactId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phone = phone;
+        this.nationality = nationality;
+        this.gender = gender;
+        this.maritalStatus = maritalStatus;
+        this.contactEmail = contactEmail;
     }
 
-    public String getBcoId() {
-        return bcoId;
+    public Integer getBusinessContactId() {
+        return businessContactId;
     }
 
-    public void setBcoId(String bcoId) {
-        this.bcoId = bcoId;
+    public void setBusinessContactId(Integer businessContactId) {
+        this.businessContactId = businessContactId;
     }
 
-    public String getBcoFirstName() {
-        return bcoFirstName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setBcoFirstName(String bcoFirstName) {
-        this.bcoFirstName = bcoFirstName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getBcoLastName() {
-        return bcoLastName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setBcoLastName(String bcoLastName) {
-        this.bcoLastName = bcoLastName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getBcoAddress() {
-        return bcoAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setBcoAddress(String bcoAddress) {
-        this.bcoAddress = bcoAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getBcoTelephone() {
-        return bcoTelephone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setBcoTelephone(String bcoTelephone) {
-        this.bcoTelephone = bcoTelephone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getBcoNationality() {
-        return bcoNationality;
+    public String getNationality() {
+        return nationality;
     }
 
-    public void setBcoNationality(String bcoNationality) {
-        this.bcoNationality = bcoNationality;
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
-    public char getBcoGender() {
-        return bcoGender;
+    public char getGender() {
+        return gender;
     }
 
-    public void setBcoGender(char bcoGender) {
-        this.bcoGender = bcoGender;
+    public void setGender(char gender) {
+        this.gender = gender;
     }
 
-    public String getBcoMaritalStatus() {
-        return bcoMaritalStatus;
+    public String getMaritalStatus() {
+        return maritalStatus;
     }
 
-    public void setBcoMaritalStatus(String bcoMaritalStatus) {
-        this.bcoMaritalStatus = bcoMaritalStatus;
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
-    public String getBcoEmail() {
-        return bcoEmail;
+    public String getContactEmail() {
+        return contactEmail;
     }
 
-    public void setBcoEmail(String bcoEmail) {
-        this.bcoEmail = bcoEmail;
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
     }
 
     public LoginInfo getLoginInfo() {
@@ -220,7 +221,7 @@ public class BusinessContact extends AbstractEntity {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (bcoId != null ? bcoId.hashCode() : 0);
+        hash += (businessContactId != null ? businessContactId.hashCode() : 0);
         return hash;
     }
 
@@ -231,7 +232,7 @@ public class BusinessContact extends AbstractEntity {
             return false;
         }
         BusinessContact other = (BusinessContact) object;
-        if ((this.bcoId == null && other.bcoId != null) || (this.bcoId != null && !this.bcoId.equals(other.bcoId))) {
+        if ((this.businessContactId == null && other.businessContactId != null) || (this.businessContactId != null && !this.businessContactId.equals(other.businessContactId))) {
             return false;
         }
         return true;
@@ -239,7 +240,12 @@ public class BusinessContact extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "com.bgsystems.ireview.model.entities.BusinessContact[ bcoId=" + bcoId + " ]";
+        return "com.bgsystems.ireview.model.entities.BusinessContact[ businessContactId=" + businessContactId + " ]";
+    }
+
+    @Override
+    public Long getId() {
+        return this.getBusinessContactId().longValue();
     }
     
 }

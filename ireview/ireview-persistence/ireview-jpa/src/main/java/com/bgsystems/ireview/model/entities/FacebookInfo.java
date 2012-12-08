@@ -24,6 +24,7 @@
 package com.bgsystems.ireview.model.entities;
 
 import com.bgsystems.ireview.model.common.AbstractEntity;
+import com.bgsystems.ireview.model.common.EntityIdIdentifiable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,77 +47,79 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "FacebookInfo.findAll", query = "SELECT f FROM FacebookInfo f"),
-    @NamedQuery(name = "FacebookInfo.findByUsrId", query = "SELECT f FROM FacebookInfo f WHERE f.usrId = :usrId"),
-    @NamedQuery(name = "FacebookInfo.findByFbiEmail", query = "SELECT f FROM FacebookInfo f WHERE f.fbiEmail = :fbiEmail"),
-    @NamedQuery(name = "FacebookInfo.findByFbiPhone", query = "SELECT f FROM FacebookInfo f WHERE f.fbiPhone = :fbiPhone"),
-    @NamedQuery(name = "FacebookInfo.findByFbiPassword", query = "SELECT f FROM FacebookInfo f WHERE f.fbiPassword = :fbiPassword")})
-public class FacebookInfo extends AbstractEntity {
+    @NamedQuery(name = "FacebookInfo.findByUserId", query = "SELECT f FROM FacebookInfo f WHERE f.userId = :userId"),
+    @NamedQuery(name = "FacebookInfo.findByEmail", query = "SELECT f FROM FacebookInfo f WHERE f.email = :email"),
+    @NamedQuery(name = "FacebookInfo.findByPhone", query = "SELECT f FROM FacebookInfo f WHERE f.phone = :phone"),
+    @NamedQuery(name = "FacebookInfo.findByPassword", query = "SELECT f FROM FacebookInfo f WHERE f.password = :password")})
+public class FacebookInfo extends AbstractEntity implements EntityIdIdentifiable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "usr_id")
-    private Integer usrId;
+    @Column(name = "user_id")
+    private Integer userId;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "fbi_email")
-    private String fbiEmail;
+    @Column(name = "email")
+    private String email;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Size(max = 45)
-    @Column(name = "fbi_phone")
-    private String fbiPhone;
+    @Column(name = "phone")
+    private String phone;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "fbi_password")
-    private String fbiPassword;
-    @JoinColumn(name = "usr_id", referencedColumnName = "usr_id", insertable = false, updatable = false)
+    @Column(name = "password")
+    private String password;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private AppUser appUser;
 
     public FacebookInfo() {
     }
 
-    public FacebookInfo(Integer usrId) {
-        this.usrId = usrId;
+    public FacebookInfo(Integer userId) {
+        this.userId = userId;
     }
 
-    public FacebookInfo(Integer usrId, String fbiEmail, String fbiPassword) {
-        this.usrId = usrId;
-        this.fbiEmail = fbiEmail;
-        this.fbiPassword = fbiPassword;
+    public FacebookInfo(Integer userId, String email, String password) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
     }
 
-    public Integer getUsrId() {
-        return usrId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUsrId(Integer usrId) {
-        this.usrId = usrId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getFbiEmail() {
-        return fbiEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setFbiEmail(String fbiEmail) {
-        this.fbiEmail = fbiEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getFbiPhone() {
-        return fbiPhone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setFbiPhone(String fbiPhone) {
-        this.fbiPhone = fbiPhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getFbiPassword() {
-        return fbiPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setFbiPassword(String fbiPassword) {
-        this.fbiPassword = fbiPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public AppUser getAppUser() {
@@ -130,7 +133,7 @@ public class FacebookInfo extends AbstractEntity {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (usrId != null ? usrId.hashCode() : 0);
+        hash += (userId != null ? userId.hashCode() : 0);
         return hash;
     }
 
@@ -141,7 +144,7 @@ public class FacebookInfo extends AbstractEntity {
             return false;
         }
         FacebookInfo other = (FacebookInfo) object;
-        if ((this.usrId == null && other.usrId != null) || (this.usrId != null && !this.usrId.equals(other.usrId))) {
+        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
             return false;
         }
         return true;
@@ -149,7 +152,12 @@ public class FacebookInfo extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "com.bgsystems.ireview.model.entities.FacebookInfo[ usrId=" + usrId + " ]";
+        return "com.bgsystems.ireview.model.entities.FacebookInfo[ userId=" + userId + " ]";
+    }
+
+    @Override
+    public Long getId() {
+        return this.getUserId().longValue();
     }
     
 }
