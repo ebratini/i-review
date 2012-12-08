@@ -21,29 +21,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bgsystems.ireview.business.dao;
+package com.bgsystems.ireview.business.dao.impl;
 
-import com.bgsystems.ireview.business.dao.common.Dao;
+import com.bgsystems.ireview.business.dao.ReviewUpdateDao;
+import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.AppUser;
 import com.bgsystems.ireview.model.entities.Business;
 import com.bgsystems.ireview.model.entities.Commodity;
 import com.bgsystems.ireview.model.entities.Review;
 import com.bgsystems.ireview.model.entities.ReviewUpdate;
 import java.util.List;
-import javax.ejb.Local;
+import java.util.logging.Logger;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author Edwin Bratini
  */
-@Local
-public interface ReviewUpdateDao extends Dao<ReviewUpdate> {
+@Stateless
+public class ReviewUpdateDaoBean extends AbstractDaoBean<ReviewUpdate> implements ReviewUpdateDao {
 
-    List<ReviewUpdate> findByReview(Review review);
+    @Inject
+    private Logger log;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    List<ReviewUpdate> findByUser(AppUser user);
+    @Override
+    protected EntityManager getEntityManager() {
+        return entityManager;
+    }
 
-    List<ReviewUpdate> findByCommodity(Commodity commodity);
+    @Override
+    public List<ReviewUpdate> findByReview(Review review) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
-    List<ReviewUpdate> findByBusiness(Business business);
+    @Override
+    public List<ReviewUpdate> findByUser(AppUser user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<ReviewUpdate> findByCommodity(Commodity commodity) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<ReviewUpdate> findByBusiness(Business business) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

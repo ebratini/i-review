@@ -21,24 +21,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bgsystems.ireview.business.dao;
+package com.bgsystems.ireview.business.dao.impl;
 
-import com.bgsystems.ireview.business.dao.common.Dao;
+import com.bgsystems.ireview.business.dao.FacebookInfoDao;
+import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.AppUser;
-import com.bgsystems.ireview.model.entities.BusinessContact;
-import java.util.List;
-import javax.ejb.Local;
+import com.bgsystems.ireview.model.entities.FacebookInfo;
+import java.util.logging.Logger;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author Edwin Bratini
  */
-@Local
-public interface BusinessContactDao extends Dao<BusinessContact> {
+@Stateless
+public class FacebookInfoDaoBean extends AbstractDaoBean<FacebookInfo> implements FacebookInfoDao {
 
-    List<BusinessContact> findByBusinessContactName(String businessContactName);
+    @Inject
+    private Logger log;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    List<AppUser> findByBusinessContactFirstName(String firstName);
+    @Override
+    protected EntityManager getEntityManager() {
+        return entityManager;
+    }
 
-    List<AppUser> findByBusinessContactLastName(String lastName);
+    @Override
+    public FacebookInfo findByUser(AppUser user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public FacebookInfo findByEmail(String email) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public FacebookInfo findByPhone(String phone) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

@@ -24,11 +24,12 @@
 package com.bgsystems.ireview.business.dao.common;
 
 import com.bgsystems.ireview.model.common.AbstractEntity;
+import com.bgsystems.ireview.model.common.EntityIdIdentifiable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -36,19 +37,17 @@ import javax.persistence.criteria.CriteriaQuery;
  *
  * @author Edwin Bratini
  */
-public abstract class AbstractDaoBean<E extends AbstractEntity> implements
-        Dao<E> {
+public abstract class AbstractDaoBean<E extends AbstractEntity> implements Dao<E> {
 
     protected final Class<E> entityClass;
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
     protected AbstractDaoBean() {
         super();
-        entityClass = (Class<E>) ((ParameterizedType) getClass()
-                .getGenericSuperclass()).getActualTypeArguments()[0];
+        entityClass = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
+
+    protected abstract EntityManager getEntityManager();
 
     protected E getSingleResult(final CriteriaQuery<E> query) {
         return this.<E>getTypedSingleResult(query);
@@ -56,50 +55,56 @@ public abstract class AbstractDaoBean<E extends AbstractEntity> implements
 
     protected <T> T getTypedSingleResult(final CriteriaQuery<T> query) {
         try {
-            return entityManager.createQuery(query).getSingleResult();
+            return getEntityManager().createQuery(query).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
     protected List<E> getResultList(final CriteriaQuery<E> query) {
-        return entityManager.createQuery(query).getResultList();
+        return getEntityManager().createQuery(query).getResultList();
     }
 
     protected List<E> getResultList(final CriteriaQuery<E> query,
             int maxresults, int firstresult) {
-        return entityManager.createQuery(query).setMaxResults(maxresults)
+        return getEntityManager().createQuery(query).setMaxResults(maxresults)
                 .setFirstResult(firstresult).getResultList();
     }
 
+    protected List<E> getResultList(final Query query) {
+        return query.getResultList();
+    }
+
     protected CriteriaBuilder getCriteriaBuilder() {
-        return entityManager.getCriteriaBuilder();
+        return getEntityManager().getCriteriaBuilder();
     }
 
     @Override
     public void persist(final E instance) {
-        entityManager.persist(instance);
+        getEntityManager().persist(instance);
     }
 
     @Override
     public E find(final long id) {
-        return entityManager.find(entityClass, id);
+        return getEntityManager().find(entityClass, id);
     }
 
     @Override
     public void remove(final E instance) {
-        boolean contains = entityManager.contains(instance);
+        boolean contains = getEntityManager().contains(instance);
         E remove = instance;
-        if (!contains) {
-            remove = find(instance.getId());
+        if (!contains && (instance instanceof EntityIdIdentifiable)) {
+            remove = find(((EntityIdIdentifiable) instance).getId());
+        } else {
+            remove = merge(instance);
         }
-        entityManager.remove(remove);
+        getEntityManager().remove(remove);
     }
 
     @Override
     public E merge(final E instance) {
-        E merge = entityManager.merge(instance);
-        entityManager.flush();
+        E merge = getEntityManager().merge(instance);
+        getEntityManager().flush();
         return merge;
     }
 

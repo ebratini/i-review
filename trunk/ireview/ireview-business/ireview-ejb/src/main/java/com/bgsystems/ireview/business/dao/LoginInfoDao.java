@@ -24,9 +24,8 @@
 package com.bgsystems.ireview.business.dao;
 
 import com.bgsystems.ireview.business.dao.common.Dao;
-import com.bgsystems.ireview.model.entities.AppUser;
 import com.bgsystems.ireview.model.entities.BusinessContact;
-import java.util.List;
+import com.bgsystems.ireview.model.entities.LoginInfo;
 import javax.ejb.Local;
 
 /**
@@ -34,11 +33,11 @@ import javax.ejb.Local;
  * @author Edwin Bratini
  */
 @Local
-public interface BusinessContactDao extends Dao<BusinessContact> {
+public interface LoginInfoDao extends Dao<LoginInfo> {
 
-    List<BusinessContact> findByBusinessContactName(String businessContactName);
+    LoginInfo findByUsername(String userName);
 
-    List<AppUser> findByBusinessContactFirstName(String firstName);
+    LoginInfo findByBusinessContact(BusinessContact businessContact);
 
-    List<AppUser> findByBusinessContactLastName(String lastName);
+    LoginInfo findByBusinessContactEmail(String businessContactEmail);
 }

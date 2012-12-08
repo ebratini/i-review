@@ -21,24 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bgsystems.ireview.business.dao;
+package com.bgsystems.ireview.business.dao.impl;
 
-import com.bgsystems.ireview.business.dao.common.Dao;
-import com.bgsystems.ireview.model.entities.AppUser;
-import com.bgsystems.ireview.model.entities.BusinessContact;
+import com.bgsystems.ireview.business.dao.CommodityScreenshotDao;
+import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
+import com.bgsystems.ireview.model.entities.Commodity;
+import com.bgsystems.ireview.model.entities.CommodityScreenshot;
 import java.util.List;
-import javax.ejb.Local;
+import java.util.logging.Logger;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author Edwin Bratini
  */
-@Local
-public interface BusinessContactDao extends Dao<BusinessContact> {
+@Stateless
+public class CommodityScreenshotDaoBean extends AbstractDaoBean<CommodityScreenshot> implements CommodityScreenshotDao {
 
-    List<BusinessContact> findByBusinessContactName(String businessContactName);
+    @Inject
+    private Logger log;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    List<AppUser> findByBusinessContactFirstName(String firstName);
+    @Override
+    protected EntityManager getEntityManager() {
+        return entityManager;
+    }
 
-    List<AppUser> findByBusinessContactLastName(String lastName);
+    @Override
+    public List<CommodityScreenshot> findByCommodity(Commodity commodity) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

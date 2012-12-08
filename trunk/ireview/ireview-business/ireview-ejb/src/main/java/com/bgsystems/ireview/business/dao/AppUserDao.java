@@ -25,6 +25,7 @@ package com.bgsystems.ireview.business.dao;
 
 import com.bgsystems.ireview.business.dao.common.Dao;
 import com.bgsystems.ireview.model.entities.AppUser;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -34,5 +35,9 @@ import javax.ejb.Local;
 @Local
 public interface AppUserDao extends Dao<AppUser> {
 
-    AppUser findByUsername(String username);
+    List<AppUser> findByName(String name);
+
+    List<AppUser> findByUserFirstName(String firstName);
+
+    List<AppUser> findByUserLastName(String lastName);
 }

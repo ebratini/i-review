@@ -24,7 +24,9 @@
 package com.bgsystems.ireview.business.dao;
 
 import com.bgsystems.ireview.business.dao.common.Dao;
+import com.bgsystems.ireview.model.entities.Business;
 import com.bgsystems.ireview.model.entities.Commodity;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -34,5 +36,13 @@ import javax.ejb.Local;
 @Local
 public interface CommodityDao extends Dao<Commodity> {
 
-    Commodity findByCommodityName(String commodityName);
+    List<Commodity> findByCommodityName(String commodityName);
+
+    List<Commodity> findByCommodityName(String commodityName, boolean exactMatch);
+
+    List<Commodity> findByBusiness(Business business);
+
+    List<Business> findVendors();
+
+    List<Business> findOwners();
 }
