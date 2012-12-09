@@ -36,7 +36,9 @@ import javax.jws.WebService;
  */
 @WebService
 @Stateless
-public class IReviewSearchService {
+public class IReviewSearch {
+    
+    
 
     /**
      * Web service operation
