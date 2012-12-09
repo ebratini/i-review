@@ -26,16 +26,17 @@ package com.bgsystems.ireview.business.dao.impl;
 import com.bgsystems.ireview.business.dao.ReviewUpdateDao;
 import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.AppUser;
-import com.bgsystems.ireview.model.entities.Business;
 import com.bgsystems.ireview.model.entities.Commodity;
 import com.bgsystems.ireview.model.entities.Review;
 import com.bgsystems.ireview.model.entities.ReviewUpdate;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -56,21 +57,28 @@ public class ReviewUpdateDaoBean extends AbstractDaoBean<ReviewUpdate> implement
 
     @Override
     public List<ReviewUpdate> findByReview(Review review) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find review update made to review with review id {0}", review.getReviewId());
+        String jpqlQueryString = "SELECT ru FROM ReviewUpdate ru WHERE ru.review = :review";
+        Query query = entityManager.createQuery(jpqlQueryString);
+        query.setParameter("review", review);
+        return (List<ReviewUpdate>) query.getResultList();
     }
 
     @Override
     public List<ReviewUpdate> findByUser(AppUser user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find review update made by user with user id {0}", user.getUserId());
+        String jpqlQueryString = "SELECT ru FROM Review ru WHERE r.appUser = :appUser";
+        Query query = entityManager.createQuery(jpqlQueryString);
+        query.setParameter("appUser", user);
+        return (List<ReviewUpdate>) query.getResultList();
     }
 
     @Override
     public List<ReviewUpdate> findByCommodity(Commodity commodity) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<ReviewUpdate> findByBusiness(Business business) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find review update made to commodity with commodity id {0}", commodity.getCommodityId());
+        String jpqlQueryString = "SELECT ru FROM Review ru WHERE ru.commodity = :commodity";
+        Query query = entityManager.createQuery(jpqlQueryString);
+        query.setParameter("commodity", commodity);
+        return (List<ReviewUpdate>) query.getResultList();
     }
 }

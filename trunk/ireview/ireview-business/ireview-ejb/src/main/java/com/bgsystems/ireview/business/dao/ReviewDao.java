@@ -25,7 +25,6 @@ package com.bgsystems.ireview.business.dao;
 
 import com.bgsystems.ireview.business.dao.common.Dao;
 import com.bgsystems.ireview.model.entities.AppUser;
-import com.bgsystems.ireview.model.entities.Business;
 import com.bgsystems.ireview.model.entities.Commodity;
 import com.bgsystems.ireview.model.entities.Review;
 import java.util.List;
@@ -41,6 +40,4 @@ public interface ReviewDao extends Dao<Review> {
     List<Review> findByUser(AppUser user);
 
     List<Review> findByCommodity(Commodity commodity);
-
-    List<Review> findByBusiness(Business business);
 }

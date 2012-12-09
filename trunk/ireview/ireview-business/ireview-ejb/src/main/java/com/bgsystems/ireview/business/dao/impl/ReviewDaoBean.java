@@ -26,15 +26,16 @@ package com.bgsystems.ireview.business.dao.impl;
 import com.bgsystems.ireview.business.dao.ReviewDao;
 import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.AppUser;
-import com.bgsystems.ireview.model.entities.Business;
 import com.bgsystems.ireview.model.entities.Commodity;
 import com.bgsystems.ireview.model.entities.Review;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -55,16 +56,19 @@ public class ReviewDaoBean extends AbstractDaoBean<Review> implements ReviewDao 
 
     @Override
     public List<Review> findByUser(AppUser user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find review made by user with user id {0}", user.getUserId());
+        String jpqlQueryString = "SELECT r FROM Review r WHERE r.appUser = :appUser";
+        Query query = entityManager.createQuery(jpqlQueryString);
+        query.setParameter("appUser", user);
+        return (List<Review>) query.getResultList();
     }
 
     @Override
     public List<Review> findByCommodity(Commodity commodity) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<Review> findByBusiness(Business business) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find review made to commodity with commodity id {0}", commodity.getCommodityId());
+        String jpqlQueryString = "SELECT r FROM Review r WHERE r.commodity = :commodity";
+        Query query = entityManager.createQuery(jpqlQueryString);
+        query.setParameter("commodity", commodity);
+        return (List<Review>) query.getResultList();
     }
 }

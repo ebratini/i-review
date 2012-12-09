@@ -28,11 +28,13 @@ import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.Commodity;
 import com.bgsystems.ireview.model.entities.CommodityScreenshot;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -53,6 +55,10 @@ public class CommodityScreenshotDaoBean extends AbstractDaoBean<CommodityScreens
 
     @Override
     public List<CommodityScreenshot> findByCommodity(Commodity commodity) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find commodity screenshot with commodity id {0}", commodity.getCommodityId());
+        String jpqlQueryString = "SELECT cs FROM CommodityScreenshot cs WHERE cs.commodity = :commodity";
+        Query query = entityManager.createQuery(jpqlQueryString);
+        query.setParameter("commodity", commodity);
+        return (List<CommodityScreenshot>) query.getResultList();
     }
 }

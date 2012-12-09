@@ -24,7 +24,9 @@
 package com.bgsystems.ireview.business.dao;
 
 import com.bgsystems.ireview.business.dao.common.Dao;
-import com.bgsystems.ireview.model.entities.BusinessContact;
+import com.bgsystems.ireview.model.entities.Business;
+import com.bgsystems.ireview.model.entities.BusinessCommodity;
+import com.bgsystems.ireview.model.entities.Commodity;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -33,11 +35,11 @@ import javax.ejb.Local;
  * @author Edwin Bratini
  */
 @Local
-public interface BusinessContactDao extends Dao<BusinessContact> {
+public interface BusinessCommodityDao extends Dao<BusinessCommodity> {
 
-    List<BusinessContact> findByBusinessContactName(String businessContactName);
+    List<BusinessCommodity> findByBusiness(Business business);
 
-    List<BusinessContact> findByBusinessContactFirstName(String firstName);
+    List<BusinessCommodity> findByCommodity(Commodity commodity);
 
-    List<BusinessContact> findByBusinessContactLastName(String lastName);
+    List<BusinessCommodity> findByBusinessCommodityRelation(String businessRelation);
 }

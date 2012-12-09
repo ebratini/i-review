@@ -27,11 +27,13 @@ import com.bgsystems.ireview.business.dao.LoginInfoDao;
 import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.BusinessContact;
 import com.bgsystems.ireview.model.entities.LoginInfo;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -52,16 +54,26 @@ public class LoginInfoDaoBean extends AbstractDaoBean<LoginInfo> implements Logi
 
     @Override
     public LoginInfo findByUsername(String userName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find login info for business contact with user name {0}", userName);
+        Query query = entityManager.createNamedQuery("LoginInfo.findByUserName");
+        query.setParameter("userName", userName);
+        return (LoginInfo) query.getSingleResult();
     }
 
     @Override
     public LoginInfo findByBusinessContact(BusinessContact businessContact) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find login info for business contact with business contact id {0}",
+                businessContact.getBusinessContactId());
+        Query query = entityManager.createNamedQuery("LoginInfo.findByBusinessContactId");
+        query.setParameter("businessContactId", businessContact.getBusinessContactId());
+        return (LoginInfo) query.getSingleResult();
     }
 
     @Override
     public LoginInfo findByBusinessContactEmail(String businessContactEmail) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find login info for business contact with email {0}", businessContactEmail);
+        Query query = entityManager.createNamedQuery("LoginInfo.findByEmail");
+        query.setParameter("email", businessContactEmail);
+        return (LoginInfo) query.getSingleResult();
     }
 }
