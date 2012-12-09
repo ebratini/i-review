@@ -28,11 +28,13 @@ import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.Business;
 import com.bgsystems.ireview.model.entities.Commodity;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -53,26 +55,53 @@ public class CommodityDaoBean extends AbstractDaoBean<Commodity> implements Comm
 
     @Override
     public List<Commodity> findByCommodityName(String commodityName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find commodity with name {0}", commodityName);
+        Query query = entityManager.createNamedQuery("Commodity.findByName");
+        query.setParameter("name", commodityName);
+        return (List<Commodity>) query.getResultList();
     }
 
     @Override
     public List<Commodity> findByCommodityName(String commodityName, boolean exactMatch) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (exactMatch) {
+            return findByCommodityName(commodityName);
+        } else {
+            // TODO: check the LIKE sintax
+            String jpqlQueryString = "SELECT c FROM Commodity c WHERE c.commodityName LIKE :commodityName";
+            Query query = entityManager.createQuery(jpqlQueryString);
+            query.setParameter("commodityName", commodityName);
+            return (List<Commodity>) query.getResultList();
+        }
     }
 
     @Override
     public List<Commodity> findByBusiness(Business business) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find commodity with business id {0}", business.getBusinessId());
+        String jpqlQueryString = "SELECT c FROM Commodity c WHERE c.business = :business";
+        Query query = entityManager.createQuery(jpqlQueryString);
+        query.setParameter("business", business);
+        return (List<Commodity>) query.getResultList();
     }
 
     @Override
-    public List<Business> findVendors() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Business> findVendors(Commodity commodity) {
+        log.log(Level.INFO, "find commodity vendors for commodity with id {0}", commodity.getCommodityId());
+        String jpqlQueryString = "SELECT b FROM Business b INNER JOIN b.businessCommodityCollection bc ";
+        jpqlQueryString += "WHERE bc.commodity = :commodity AND bc.businessCommodityRelation = :businessRelation";
+        Query query = entityManager.createQuery(jpqlQueryString);
+        query.setParameter("commodity", commodity);
+        query.setParameter("businessRelation", "vendor");
+        return (List<Business>) query.getResultList();
     }
 
     @Override
-    public List<Business> findOwners() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Business findOwner(Commodity commodity) {
+        log.log(Level.INFO, "find commodity owner for commodity with id {0}", commodity.getCommodityId());
+        String jpqlQueryString = "SELECT b FROM Business b INNER JOIN b.businessCommodityCollection bc ";
+        jpqlQueryString += "WHERE bc.commodity = :commodity AND bc.businessCommodityRelation = :businessRelation";
+        Query query = entityManager.createQuery(jpqlQueryString);
+        query.setParameter("commodity", commodity);
+        query.setParameter("businessRelation", "owner");
+        return (Business) query.getSingleResult();
     }
 }

@@ -23,9 +23,11 @@
  */
 package com.bgsystems.ireview.business.dao.impl;
 
-import com.bgsystems.ireview.business.dao.BusinessDao;
+import com.bgsystems.ireview.business.dao.BusinessCommodityDao;
 import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.Business;
+import com.bgsystems.ireview.model.entities.BusinessCommodity;
+import com.bgsystems.ireview.model.entities.Commodity;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +42,7 @@ import javax.persistence.Query;
  * @author Edwin Bratini
  */
 @Stateless
-public class BusinessDaoBean extends AbstractDaoBean<Business> implements BusinessDao {
+public class BusinessCommodityDaoBean extends AbstractDaoBean<BusinessCommodity> implements BusinessCommodityDao {
 
     @Inject
     private Logger log;
@@ -53,18 +55,26 @@ public class BusinessDaoBean extends AbstractDaoBean<Business> implements Busine
     }
 
     @Override
-    public List<Business> findByBusinessName(String businessName) {
-        log.log(Level.INFO, "find business with name {0}", businessName);
-        Query query = entityManager.createNamedQuery("Business.findByName");
-        query.setParameter("name", businessName);
-        return (List<Business>) query.getResultList();
+    public List<BusinessCommodity> findByBusiness(Business business) {
+        log.log(Level.INFO, "find business-commodity with business id {0}", business.getBusinessId());
+        Query query = entityManager.createNamedQuery("BusinessCommodity.findByBusinessId");
+        query.setParameter("businessId", business.getBusinessId());
+        return (List<BusinessCommodity>) query.getResultList();
     }
 
     @Override
-    public List<Business> findByBusinessIndustry(String industry) {
-        log.log(Level.INFO, "find business with industry category {0}", industry);
-        Query query = entityManager.createNamedQuery("Business.findByName");
-        query.setParameter("industry", industry);
-        return (List<Business>) query.getResultList();
+    public List<BusinessCommodity> findByCommodity(Commodity commodity) {
+        log.log(Level.INFO, "find business-commodity with commodity id {0}", commodity.getCommodityId());
+        Query query = entityManager.createNamedQuery("BusinessCommodity.findByBusinessId");
+        query.setParameter("commodityId", commodity.getCommodityId());
+        return (List<BusinessCommodity>) query.getResultList();
+    }
+
+    @Override
+    public List<BusinessCommodity> findByBusinessCommodityRelation(String businessRelation) {
+        log.log(Level.INFO, "find business-commodity with business-commodity relation id {0}", businessRelation);
+        Query query = entityManager.createNamedQuery("BusinessCommodity.findByBusinessCommodityRelation");
+        query.setParameter("businessCommodityRelation", businessRelation);
+        return (List<BusinessCommodity>) query.getResultList();
     }
 }

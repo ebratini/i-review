@@ -21,23 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bgsystems.ireview.business.dao;
+package com.bgsystems.ireview.business.service.model;
 
-import com.bgsystems.ireview.business.dao.common.Dao;
-import com.bgsystems.ireview.model.entities.BusinessContact;
-import java.util.List;
-import javax.ejb.Local;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Edwin Bratini
  */
-@Local
-public interface BusinessContactDao extends Dao<BusinessContact> {
+@XmlRootElement
+public enum MakeReviewServiceResponse {
 
-    List<BusinessContact> findByBusinessContactName(String businessContactName);
+    OK("the operation has been done successfully"),
+    EXCEPTION("there was an exception the operation has been cancelled");
+    private String responseMessage;
 
-    List<BusinessContact> findByBusinessContactFirstName(String firstName);
+    private MakeReviewServiceResponse(String responseMessage) {
+        this.responseMessage = responseMessage;
+    }
 
-    List<BusinessContact> findByBusinessContactLastName(String lastName);
+    public String getResponseMessage() {
+        return responseMessage;
+    }
 }

@@ -42,7 +42,7 @@ public interface CommodityDao extends Dao<Commodity> {
 
     List<Commodity> findByBusiness(Business business);
 
-    List<Business> findVendors();
+    List<Business> findVendors(Commodity commodity);
 
-    List<Business> findOwners();
+    Business findOwner(Commodity commodity);
 }

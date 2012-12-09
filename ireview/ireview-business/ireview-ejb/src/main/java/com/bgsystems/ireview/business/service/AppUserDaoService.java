@@ -21,23 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bgsystems.ireview.business.dao;
+package com.bgsystems.ireview.business.service;
 
-import com.bgsystems.ireview.business.dao.common.Dao;
-import com.bgsystems.ireview.model.entities.BusinessContact;
-import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
 
 /**
  *
  * @author Edwin Bratini
  */
-@Local
-public interface BusinessContactDao extends Dao<BusinessContact> {
+@WebService(serviceName = "AppUserDaoService")
+@Stateless()
+public class AppUserDaoService {
 
-    List<BusinessContact> findByBusinessContactName(String businessContactName);
-
-    List<BusinessContact> findByBusinessContactFirstName(String firstName);
-
-    List<BusinessContact> findByBusinessContactLastName(String lastName);
+    /**
+     * This is a sample web service operation
+     */
+    @WebMethod(operationName = "hello")
+    public String hello(@WebParam(name = "name") String txt) {
+        return "Hello " + txt + " !";
+    }
 }

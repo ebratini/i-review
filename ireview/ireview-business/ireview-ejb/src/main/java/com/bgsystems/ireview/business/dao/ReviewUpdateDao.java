@@ -44,6 +44,4 @@ public interface ReviewUpdateDao extends Dao<ReviewUpdate> {
     List<ReviewUpdate> findByUser(AppUser user);
 
     List<ReviewUpdate> findByCommodity(Commodity commodity);
-
-    List<ReviewUpdate> findByBusiness(Business business);
 }

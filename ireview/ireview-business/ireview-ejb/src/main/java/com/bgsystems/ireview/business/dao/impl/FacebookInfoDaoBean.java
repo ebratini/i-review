@@ -26,12 +26,16 @@ package com.bgsystems.ireview.business.dao.impl;
 import com.bgsystems.ireview.business.dao.FacebookInfoDao;
 import com.bgsystems.ireview.business.dao.common.AbstractDaoBean;
 import com.bgsystems.ireview.model.entities.AppUser;
+import com.bgsystems.ireview.model.entities.Business;
 import com.bgsystems.ireview.model.entities.FacebookInfo;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -52,16 +56,25 @@ public class FacebookInfoDaoBean extends AbstractDaoBean<FacebookInfo> implement
 
     @Override
     public FacebookInfo findByUser(AppUser user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find facebook info for app user id {0}", user.getUserId());
+        Query query = entityManager.createNamedQuery("FacebookInfo.findByUserId");
+        query.setParameter("userId", user.getUserId());
+        return (FacebookInfo) query.getSingleResult();
     }
 
     @Override
     public FacebookInfo findByEmail(String email) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find facebook info for app user email {0}", email);
+        Query query = entityManager.createNamedQuery("FacebookInfo.findByEmail");
+        query.setParameter("email", email);
+        return (FacebookInfo) query.getSingleResult();
     }
 
     @Override
     public FacebookInfo findByPhone(String phone) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.log(Level.INFO, "find facebook info for app user phone {0}", phone);
+        Query query = entityManager.createNamedQuery("FacebookInfo.findByPhone");
+        query.setParameter("phone", phone);
+        return (FacebookInfo) query.getSingleResult();
     }
 }
