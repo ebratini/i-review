@@ -23,7 +23,7 @@
  */
 package com.bgsystems.ireview.model.entities;
 
-import java.io.Serializable;
+import com.bgsystems.ireview.model.common.AbstractEntity;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -49,7 +49,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "BusinessCommodity.findByBusinessId", query = "SELECT b FROM BusinessCommodity b WHERE b.businessCommodityPK.businessId = :businessId"),
     @NamedQuery(name = "BusinessCommodity.findByCommodityId", query = "SELECT b FROM BusinessCommodity b WHERE b.businessCommodityPK.commodityId = :commodityId"),
     @NamedQuery(name = "BusinessCommodity.findByBusinessCommodityRelation", query = "SELECT b FROM BusinessCommodity b WHERE b.businessCommodityRelation = :businessCommodityRelation")})
-public class BusinessCommodity implements Serializable {
+public class BusinessCommodity extends AbstractEntity {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected BusinessCommodityPK businessCommodityPK;
