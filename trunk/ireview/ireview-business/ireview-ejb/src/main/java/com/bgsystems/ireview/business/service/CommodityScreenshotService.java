@@ -23,6 +23,12 @@
  */
 package com.bgsystems.ireview.business.service;
 
+import com.bgsystems.ireview.business.dao.CommodityDao;
+import com.bgsystems.ireview.business.dao.CommodityScreenshotDao;
+import com.bgsystems.ireview.model.entities.Commodity;
+import com.bgsystems.ireview.model.entities.CommodityScreenshot;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -32,15 +38,25 @@ import javax.jws.WebService;
  *
  * @author Edwin Bratini
  */
-@WebService(serviceName = "ReviewDaoService")
+@WebService(serviceName = "CommodityScreenshotService")
 @Stateless()
-public class ReviewDaoService {
+public class CommodityScreenshotService {
+
+    @EJB
+    private CommodityDao commodityDaoBean;
+    @EJB
+    private CommodityScreenshotDao commodityScreenshotDao;
+    
+    @WebMethod(operationName = "findByCommodity")
+    public List<CommodityScreenshot> findByCommodity(@WebParam(name = "commodity") Commodity commodity) {
+        return commodityScreenshotDao.findByCommodity(commodity);
+    }
 
     /**
-     * This is a sample web service operation
+     * Web service operation
      */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
+    @WebMethod(operationName = "findCommodityScreenshots")
+    public List<CommodityScreenshot> findCommodityScreenshots(@WebParam(name = "commodityId") int commodityId) {
+        return findByCommodity(commodityDaoBean.find(commodityId));
     }
 }

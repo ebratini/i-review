@@ -37,7 +37,9 @@ import javax.ejb.Local;
 @Local
 public interface ReviewDao extends Dao<Review> {
 
-    List<Review> findByUser(AppUser user);
+    List<Review> findReviewByUser(AppUser user);
 
-    List<Review> findByCommodity(Commodity commodity);
+    List<Review> findReviewByCommodity(Commodity commodity);
+
+    List<Review> findReviewByCommodity(Commodity commodity, int[] range);
 }

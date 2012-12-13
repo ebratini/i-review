@@ -66,10 +66,9 @@ public class CommodityDaoBean extends AbstractDaoBean<Commodity> implements Comm
         if (exactMatch) {
             return findByCommodityName(commodityName);
         } else {
-            // TODO: check the LIKE sintax
             String jpqlQueryString = "SELECT c FROM Commodity c WHERE c.commodityName LIKE :commodityName";
             Query query = entityManager.createQuery(jpqlQueryString);
-            query.setParameter("commodityName", commodityName);
+            query.setParameter("commodityName", String.format("%%s%", commodityName));
             return (List<Commodity>) query.getResultList();
         }
     }
@@ -103,5 +102,16 @@ public class CommodityDaoBean extends AbstractDaoBean<Commodity> implements Comm
         query.setParameter("commodity", commodity);
         query.setParameter("businessRelation", "owner");
         return (Business) query.getSingleResult();
+    }
+
+    @Override
+    public List<Commodity> searchCommodity(String searchKeyword) {
+        log.log(Level.INFO, "search commodity with keyword {0}", searchKeyword);
+        String jpqlQueryString = "SELECT DISTINCT c FROM Commodity c WHERE c.commodityName LIKE :commodityName";
+        jpqlQueryString += " AND c.description LIKE :description";
+        Query query = entityManager.createQuery(jpqlQueryString);
+        query.setParameter("commodityName", String.format("%%s%", searchKeyword));
+        query.setParameter("description", String.format("%%s%", searchKeyword));
+        return (List<Commodity>) query.getResultList();
     }
 }

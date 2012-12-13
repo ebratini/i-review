@@ -23,7 +23,9 @@
  */
 package com.bgsystems.ireview.business.service;
 
+import com.bgsystems.ireview.model.entities.AppUser;
 import javax.ejb.Stateless;
+import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -32,15 +34,15 @@ import javax.jws.WebService;
  *
  * @author Edwin Bratini
  */
-@WebService(serviceName = "AppUserDaoService")
+@WebService(serviceName = "AppUserService")
 @Stateless()
-public class AppUserDaoService {
+public class AppUserService {
 
     /**
-     * This is a sample web service operation
+     * Web service operation
      */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
+    @WebMethod(operationName = "signup")
+    @Oneway
+    public void signup(@WebParam(name = "user") AppUser user) {
     }
 }

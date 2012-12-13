@@ -24,6 +24,7 @@
 package com.bgsystems.ireview.business.service;
 
 import javax.ejb.Stateless;
+import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -32,15 +33,15 @@ import javax.jws.WebService;
  *
  * @author Edwin Bratini
  */
-@WebService(serviceName = "ReviewUpdateDaoService")
+@WebService(serviceName = "IReviewFacebookService")
 @Stateless()
-public class ReviewUpdateDaoService {
+public class IReviewFacebookService {
 
     /**
-     * This is a sample web service operation
+     * Web service operation
      */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
+    @WebMethod(operationName = "askFriendAboutCommodity")
+    @Oneway
+    public void askFriendAboutCommodity(@WebParam(name = "commodityId") int commodityId, @WebParam(name = "fbFriendEmail") String fbFriendEmail) {
     }
 }

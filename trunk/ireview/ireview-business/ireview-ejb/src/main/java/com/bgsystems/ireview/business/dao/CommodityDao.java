@@ -39,6 +39,8 @@ public interface CommodityDao extends Dao<Commodity> {
     List<Commodity> findByCommodityName(String commodityName);
 
     List<Commodity> findByCommodityName(String commodityName, boolean exactMatch);
+    
+    List<Commodity> searchCommodity(String searchKeyword);
 
     List<Commodity> findByBusiness(Business business);
 
