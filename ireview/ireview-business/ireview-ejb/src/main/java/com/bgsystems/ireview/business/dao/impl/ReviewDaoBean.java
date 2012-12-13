@@ -55,7 +55,7 @@ public class ReviewDaoBean extends AbstractDaoBean<Review> implements ReviewDao 
     }
 
     @Override
-    public List<Review> findByUser(AppUser user) {
+    public List<Review> findReviewByUser(AppUser user) {
         log.log(Level.INFO, "find review made by user with user id {0}", user.getUserId());
         String jpqlQueryString = "SELECT r FROM Review r WHERE r.appUser = :appUser";
         Query query = entityManager.createQuery(jpqlQueryString);
@@ -64,11 +64,16 @@ public class ReviewDaoBean extends AbstractDaoBean<Review> implements ReviewDao 
     }
 
     @Override
-    public List<Review> findByCommodity(Commodity commodity) {
+    public List<Review> findReviewByCommodity(Commodity commodity) {
         log.log(Level.INFO, "find review made to commodity with commodity id {0}", commodity.getCommodityId());
         String jpqlQueryString = "SELECT r FROM Review r WHERE r.commodity = :commodity";
         Query query = entityManager.createQuery(jpqlQueryString);
         query.setParameter("commodity", commodity);
         return (List<Review>) query.getResultList();
+    }
+
+    @Override
+    public List<Review> findReviewByCommodity(Commodity commodity, int[] range) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
