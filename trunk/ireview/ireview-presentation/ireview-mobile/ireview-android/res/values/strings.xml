@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">iReview</string>
+    <string name="menu_settings">Settings</string>
+    <color name="bgrColor">#F5F5F5</color>
+    <string name="do_search">Search</string>
+    <string name="scan_qr">Scan QR Code</string>
+    <string name="search_hint">Search into iReview</string>
+    <string name="search_instructions">Use the search box in the Action Bar to look up a commodity</string>
+    <string name="no_results">No results fount for \&quot;%s\&quot;</string>
+    <string name="blank"/>
+    <string name="menu_clear_search_history">Clear Search History</string>
+    <string name="make_review">Make Review</string>
+    <string name="make_update_review">Update Review Made</string>
+    <string name="ask_friend">Ask a Friend</string>
+
+</resources>
